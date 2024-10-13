@@ -1,0 +1,6 @@
+flask
+flask-cors
+render_template
+send_from_directory
+request
+jsonify

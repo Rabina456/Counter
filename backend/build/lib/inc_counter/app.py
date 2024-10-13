@@ -14,30 +14,31 @@ counter = 0
 def log_request_info():
     app.logger.info('Request Path: %s', request.path)
 
-@app.route('/api/increment', methods=['POST'])
+@app.route('/get_counter', methods=['GET'])
+def get_counter():
+    global counter
+    return jsonify({'counter': counter})
+
+@app.route('/increment', methods=['POST'])
 def increment_counter():
     global counter
     counter += 1
     return jsonify({'counter': counter})
 
-@app.errorhandler(404)
-def not_found(e):
+
+
+@app.route('/reset', methods=['POST'])
+def reset_counter():
+    global counter
+    counter=0
+    return jsonify({'counter': counter}) 
+
+@app.route('/')
+def index():
     return render_template('index.html')
 
-@app.route("/", defaults={"path": ""})
-@app.route("/<path:path>")
-def serve_frontend(path):
-    print("Serving from static folder:", app.static_folder)
-    print("Files in build directory:", os.listdir(app.static_folder))
-    # If the path is a file in the build/static folder, serve it
-    if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
-        return send_from_directory(app.static_folder, path)
-    # Otherwise, serve the index.html (for React Router handling other paths)
-    else:
-        return render_template( 'index.html')
-
 def main():
-    app.run(debug=True)
+    app.run(debug=True, port=5000)
 
 if __name__ == "__main__":
     main()

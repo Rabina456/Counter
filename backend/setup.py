@@ -2,12 +2,16 @@ from setuptools import setup, find_packages
 
 setup(
     name='inc-counter',
-    version='0.4',
+    version='0.8',
     packages=find_packages(),
     include_package_data=True,
+    package_data={
+        'inc-counter': ['templates/*.html',
+                        'static/**/*', ],  # Include all HTML files in the templates directory
+    },
     install_requires=[
-        'Flask',
-        'Flask-Cors',
+        'flask',
+        'flask_cors',
         # Add other dependencies here (e.g., React-related packages if needed)
     ],
     entry_points={

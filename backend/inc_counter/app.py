@@ -14,22 +14,31 @@ counter = 0
 def log_request_info():
     app.logger.info('Request Path: %s', request.path)
 
-@app.route('/api/increment', methods=['POST'])
+@app.route('/get_counter', methods=['GET'])
+def get_counter():
+    global counter
+    return jsonify({'counter': counter})
+
+@app.route('/increment', methods=['POST'])
 def increment_counter():
     global counter
     counter += 1
     return jsonify({'counter': counter})
 
-@app.errorhandler(404)
-def not_found(e):
-    return render_template('index.html')
+
+
+@app.route('/reset', methods=['POST'])
+def reset_counter():
+    global counter
+    counter=0
+    return jsonify({'counter': counter}) 
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
 def main():
-    app.run(debug=True, port=8000)
+    app.run(debug=True, port=5000)
 
 if __name__ == "__main__":
     main()
